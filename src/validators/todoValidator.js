@@ -10,7 +10,7 @@ const SCHEMA = {
 };
 
 /**
- * Validate create/update user request.
+ * Validate create/update todo request.
  *
  * @param  {object}   req
  * @param  {object}   res
@@ -24,7 +24,7 @@ function todoValidator(req, res, next) {
 }
 
 /**
- * Validate users existence.
+ * Validate todo existence.
  *
  * @param  {object}   req
  * @param  {object}   res

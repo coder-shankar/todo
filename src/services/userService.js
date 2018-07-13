@@ -7,6 +7,7 @@ import User from '../models/user';
  * @return {Promise}
  */
 export function getAllUsers() {
+
   return User.fetchAll();
 }
 

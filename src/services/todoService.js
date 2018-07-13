@@ -1,5 +1,7 @@
 import Boom from 'boom';
-import Todo from '../models/todo';
+// import Todo from '../models/todo';
+import Category from '../models/category';
+
 
 
 
@@ -8,8 +10,15 @@ import Todo from '../models/todo';
  *
  * @return {Promise}
  */
-export function getAllTodos() {
-  return Todo.fetchAll();
+export function getAllTodos(query) {
+  if (query.sort) {
+
+    return new Todo({
+
+    }).orderBy('title', query.sort).fetchAll();
+  } else {
+    return Todo.fetchAll();
+  }
 }
 
 /**
@@ -39,7 +48,8 @@ export function getTodo(id) {
 export function createTodo(todo) {
   return new Todo({
     title: todo.title,
-    description: todo.description
+    description: todo.description,
+    user_id: todo.user_id
   }).save().then(todo => todo.refresh());
 }
 
@@ -73,14 +83,24 @@ export function deleteTodo(id) {
 
 
 export function filterByTitle(title) {
-  return new Todo({
-    title: title
-  }).fetch().then(todo => {
-    if (!todo) {
-      throw new Boom.notFound('Todo not found');
+
+  return Todo.query((qb) => {
+    qb.where('title', 'LIKE', title);
+  }).fetchAll();
+
+}
+
+export function getTodoCategory(name) {
+  console.log(name);
+  return Category.forge({
+    name: name
+  }).fetch({
+    withRelated: 'category'
+  }).then(category => {
+    if (!category) {
+      throw new Boom.notFound('item not found');
     }
+    return category;
 
-    return todo;
-  });
-
+  })
 }

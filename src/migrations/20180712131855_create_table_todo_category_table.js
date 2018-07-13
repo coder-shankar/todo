@@ -3,7 +3,7 @@
  * @return {Promise}
  */
 export function up(knex) {
-  return knex.schema.createTable('todos_categories', table => {
+  return knex.schema.createTable('categories_todos', table => {
     table.increments();
     table
       .timestamp('created_at')
@@ -23,5 +23,5 @@ export function up(knex) {
  * @return {Promise}
  */
 export function down(knex) {
-  return knex.schema.dropTable('todos_categories');
+  return knex.schema.dropTable('categories_todos');
 }

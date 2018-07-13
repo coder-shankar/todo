@@ -13,13 +13,27 @@ const router = Router();
  * GET /api/category
  */
 router.get('/', (req, res, next) => {
+  if (req.query.name) {
 
-  categoryService
-    .getAllCategories()
-    .then(data => res.json({
-      data
-    }))
-    .catch(err => next(err));
+    categoryService
+      .filterByName(req.query.name)
+      .then(data => res.json({
+        data
+      }))
+      .catch(err => next(err));
+
+  } else {
+
+    categoryService
+      .getAllCategories()
+      .then(data => res.json({
+        data
+      }))
+      .catch(err => next(err));
+
+  }
+
+
 });
 
 

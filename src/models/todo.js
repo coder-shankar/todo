@@ -1,4 +1,5 @@
 import bookshelf from '../db';
+import Category from './category';
 
 const TABLE_NAME = 'todos';
 
@@ -14,6 +15,11 @@ class Todo extends bookshelf.Model {
     return true;
 
   }
+
+  // category() {
+
+  //   return this.belongsToMany(Category);
+  // }
 
 }
 

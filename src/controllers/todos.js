@@ -8,6 +8,10 @@ import {
   findTodo,
   todoValidator
 } from '../validators/todoValidator';
+import Todo from '../models/todo';
+import {
+  getCategorty
+} from '../services/categoryService';
 
 
 const router = Router();
@@ -18,25 +22,58 @@ const router = Router();
  */
 router.get('/', (req, res, next) => {
 
-  if (req.query.title) {
 
-
+  if (req.query.name) {
     todoService
-      .filterByTitle(req.query.title)
+      .getTodoCategory(req.query.name)
       .then(data => res.json({
         data
       }))
       .catch(err => next(err));
   } else {
-    todoService
-      .getAllTodos()
-      .then(data => res.json({
-        data
-      }))
-      .catch(err => next(err));
+    if (req.query.page) {
+
+      let page = parseInt(req.query.page);
+      let pageSize = 10;
+      if (req.query.limit) {
+        pageSize = parseInt(req.query.limit);
+      }
+
+      return new Todo({
+
+        }).fetchPage({
+          pageSize: pageSize,
+          page: page
+        }).then(data => res.json({
+          data
+        }))
+        .catch(err => res.json({
+          err
+        }));
+
+    }
+
+    if (req.query.title) {
+
+
+      todoService
+        .filterByTitle(req.query.title)
+        .then(data => res.json({
+          data
+        }))
+        .catch(err => next(err));
+    } else {
+
+
+      todoService
+        .getAllTodos(req.query)
+        .then(data => res.json({
+          data
+        }))
+        .catch(err => next(err));
+    }
+
   }
-
-
 
 });
 
@@ -52,14 +89,7 @@ router.get('/:id', (req, res, next) => {
       data
     }))
     .catch(err => next(err));
-
-
 });
-
-
-
-
-
 
 /**
  * post
@@ -100,6 +130,11 @@ router.delete('/:id', findTodo, (req, res, next) => {
     }))
     .catch(err => next(err));
 });
+
+
+/**
+ * test
+ */
 
 
 

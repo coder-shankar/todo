@@ -1,4 +1,6 @@
 import bookshelf from '../db';
+import Todo from './todo';
+
 
 const TABLE_NAME = 'categories';
 
@@ -13,6 +15,13 @@ class Category extends bookshelf.Model {
   get hasTimestamps() {
     return true;
   }
+
+  category() {
+
+    return this.belongsToMany(Todo);
+  }
+
+
 }
 
 export default Category;

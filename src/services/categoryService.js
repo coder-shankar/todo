@@ -67,3 +67,14 @@ export function deleteCategory(id) {
     id
   }).fetch().then(category => category.destroy());
 }
+
+export function filterByName(name) {
+  return new Category({
+    name
+  }).fetch().then(category => {
+    if (!category) {
+      throw new Boom.notFound('Category not found');
+    }
+    return category;
+  });
+}

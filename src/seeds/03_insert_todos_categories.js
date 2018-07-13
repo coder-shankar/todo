@@ -7,12 +7,12 @@ import Category from "../models/category";
  */
 export function seed(knex, Promise) {
   // Deletes all existing entries
-  return knex('todos_categories')
+  return knex('categories_todos')
     .del()
     .then(() => {
       // Inserts seed entries
       return Promise.all([
-        knex('todos_categories').insert([{
+        knex('categories_todos').insert([{
             todo_id: 1,
             category_id: 1,
             updated_at: new Date()
