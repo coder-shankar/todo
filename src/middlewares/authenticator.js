@@ -6,9 +6,13 @@ import Boom from 'boom';
 
 
 export async function authenicate(req, res, next) {
+
+
   const token = req.get('oauth');
   try {
     const email = await tokenUtils.verifyAccessToken(token).data;
+
+
     //check the user email
 
     const user = await userServices.getUserEmail(email);

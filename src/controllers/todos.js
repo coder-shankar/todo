@@ -90,16 +90,16 @@ router.get('/', (req, res, next) => {
  * get id
  */
 
-router.get('/:id', (req, res, next) => {
-  todoService
-    .getTodo(req.params.id)
-    .then(data =>
-      res.json({
-        data
-      })
-    )
-    .catch(err => next(err));
-});
+// router.get('/:id', (req, res, next) => {
+//   todoService
+//     .getTodo(req.params.id)
+//     .then(data =>
+//       res.json({
+//         data
+//       })
+//     )
+//     .catch(err => next(err));
+// });
 
 /**
  * post

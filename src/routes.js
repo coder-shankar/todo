@@ -9,6 +9,7 @@ import loginController from './controllers/login';
 import * as authMiddleWare from './middlewares/authenticator';
 import refreshTokenController from './controllers/refresh';
 import logoutController from './controllers/logout';
+import signupController from './controllers/signup';
 /**
  * Contains all API routes for the application.
  */
@@ -58,10 +59,11 @@ router.get('/', (req, res) => {
     apiVersion: req.app.locals.version
   });
 });
-router.use('/login', loginController);
-router.use('/users', usersController);
 router.use('/todos', authMiddleWare.authenicate, todosController);
+router.use('/login', loginController);
+router.use('/logout', logoutController);
+router.use('/refresh', refreshTokenController);
+router.use('/signup', signupController);
+router.use('/users', usersController);
 router.use('/categories', categoriesController);
-router.use("/refresh", refreshTokenController);
-router.use("/logout", logoutController);
 export default router;

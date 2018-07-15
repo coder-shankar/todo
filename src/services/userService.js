@@ -1,5 +1,6 @@
 import Boom from 'boom';
 import User from '../models/user';
+import bcrypt from 'bcryptjs';
 
 /**
  * Get all users.
@@ -54,7 +55,9 @@ export function getUserEmail(email) {
  */
 export function createUser(user) {
   return new User({
-    name: user.name
+    name: user.name,
+    password: bcrypt.hashSync(user.password, 10),
+    email: user.email
   }).save().then(user => user.refresh());
 }
 
