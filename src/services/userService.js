@@ -28,6 +28,23 @@ export function getUser(id) {
     return user;
   });
 }
+/**
+ * get user by email
+ */
+
+export function getUserEmail(email) {
+  return new User({
+      email: email
+    })
+    .fetch()
+    .then(user => {
+      if (!user) {
+        throw new Boom.notFound('user not found');
+      }
+
+      return user;
+    });
+}
 
 /**
  * Create new user.

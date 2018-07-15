@@ -1,9 +1,6 @@
 import Boom from 'boom';
-// import Todo from '../models/todo';
+import Todo from '../models/todo';
 import Category from '../models/category';
-
-
-
 
 /**
  * Get all users.
@@ -91,16 +88,16 @@ export function filterByTitle(title) {
 }
 
 export function getTodoCategory(name) {
-  console.log(name);
   return Category.forge({
-    name: name
-  }).fetch({
-    withRelated: 'category'
-  }).then(category => {
-    if (!category) {
-      throw new Boom.notFound('item not found');
-    }
-    return category;
-
-  })
+      name: name
+    })
+    .fetch({
+      withRelated: 'category'
+    })
+    .then(category => {
+      if (!category) {
+        throw new Boom.notFound('item not found');
+      }
+      return category;
+    })
 }

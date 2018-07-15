@@ -5,7 +5,10 @@ import swaggerSpec from './utils/swagger';
 import usersController from './controllers/users';
 import todosController from './controllers/todos';
 import categoriesController from './controllers/categories';
-
+import loginController from './controllers/login';
+import * as authMiddleWare from './middlewares/authenticator';
+import refreshTokenController from './controllers/refresh';
+import logoutController from './controllers/logout';
 /**
  * Contains all API routes for the application.
  */
@@ -55,10 +58,10 @@ router.get('/', (req, res) => {
     apiVersion: req.app.locals.version
   });
 });
-
+router.use('/login', loginController);
 router.use('/users', usersController);
-router.use('/todos', todosController);
+router.use('/todos', authMiddleWare.authenicate, todosController);
 router.use('/categories', categoriesController);
-
-
+router.use("/refresh", refreshTokenController);
+router.use("/logout", logoutController);
 export default router;

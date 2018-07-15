@@ -14,13 +14,13 @@ export function seed(knex, Promise) {
             title: 'learn node js',
             updated_at: new Date(),
             description: 'node js is powerfull javascript framework',
-            user_id: 29
+            user_id: 1
           },
           {
             title: 'learn react js',
             updated_at: new Date(),
             description: 'react js is powerfull javascript framework',
-            user_id: 30
+            user_id: 2
           }
         ])
       ]);

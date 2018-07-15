@@ -58,6 +58,7 @@ router.put('/:id', findUser, userValidator, (req, res, next) => {
     .catch(err => next(err));
 });
 
+
 /**
  * DELETE /api/users/:id
  */

@@ -13,81 +13,91 @@ import {
   getCategorty
 } from '../services/categoryService';
 
-
 const router = Router();
-
 
 /**
  * GET /api/todos
  */
 router.get('/', (req, res, next) => {
-
-
-  if (req.query.name) {
-    todoService
-      .getTodoCategory(req.query.name)
-      .then(data => res.json({
+  todoService
+    .getTodo(req.user.attributes.id)
+    .then(data =>
+      res.json({
         data
-      }))
-      .catch(err => next(err));
-  } else {
-    if (req.query.page) {
-
-      let page = parseInt(req.query.page);
-      let pageSize = 10;
-      if (req.query.limit) {
-        pageSize = parseInt(req.query.limit);
-      }
-
-      return new Todo({
-
-        }).fetchPage({
-          pageSize: pageSize,
-          page: page
-        }).then(data => res.json({
-          data
-        }))
-        .catch(err => res.json({
-          err
-        }));
-
-    }
-
-    if (req.query.title) {
+      })
+    )
+    .catch(err => next(err));
 
 
-      todoService
-        .filterByTitle(req.query.title)
-        .then(data => res.json({
-          data
-        }))
-        .catch(err => next(err));
-    } else {
 
+  // if (req.query.name) {
+  //   todoService
+  //     .getTodoCategory(req.query.name)
+  //     .then(data =>
+  //       res.json({
+  //         data
+  //       })
+  //     )
+  //     .catch(err => next(err));
+  // } else {
+  //   if (req.query.page) {
+  //     let page = parseInt(req.query.page);
+  //     let pageSize = 10;
+  //     if (req.query.limit) {
+  //       pageSize = parseInt(req.query.limit);
+  //     }
 
-      todoService
-        .getAllTodos(req.query)
-        .then(data => res.json({
-          data
-        }))
-        .catch(err => next(err));
-    }
+  //     return new Todo({})
+  //       .fetchPage({
+  //         pageSize: pageSize,
+  //         page: page
+  //       })
+  //       .then(data =>
+  //         res.json({
+  //           data
+  //         })
+  //       )
+  //       .catch(err =>
+  //         res.json({
+  //           err
+  //         })
+  //       );
+  //   }
 
-  }
-
+  //   if (req.query.title) {
+  //     todoService
+  //       .filterByTitle(req.query.title)
+  //       .then(data =>
+  //         res.json({
+  //           data
+  //         })
+  //       )
+  //       .catch(err => next(err));
+  //   } else {
+  //     todoService
+  //       .getAllTodos(req.query)
+  //       .then(data =>
+  //         res.json({
+  //           data
+  //         })
+  //       )
+  //       .catch(err => next(err));
+  //   }
+  // }
 });
 
-
 /**
- * get id 
+ * get id
  */
 
 router.get('/:id', (req, res, next) => {
   todoService
     .getTodo(req.params.id)
-    .then(data => res.json({
-      data
-    }))
+    .then(data =>
+      res.json({
+        data
+      })
+    )
     .catch(err => next(err));
 });
 
@@ -97,13 +107,13 @@ router.get('/:id', (req, res, next) => {
 router.post('/', (req, res, next) => {
   todoService
     .createTodo(req.body)
-    .then(data => res.status(HttpStatus.CREATED).json({
-      data
-    }))
+    .then(data =>
+      res.status(HttpStatus.CREATED).json({
+        data
+      })
+    )
     .catch(err => next(err));
 });
-
-
 
 /**
  * PUT /api/todos/:id
@@ -111,13 +121,13 @@ router.post('/', (req, res, next) => {
 router.put('/:id', findTodo, todoValidator, (req, res, next) => {
   todoService
     .updateTodo(req.params.id, req.body)
-    .then(data => res.json({
-      data
-    }))
+    .then(data =>
+      res.json({
+        data
+      })
+    )
     .catch(err => next(err));
 });
-
-
 
 /**
  * DELETE /api/todos/:id
@@ -125,19 +135,16 @@ router.put('/:id', findTodo, todoValidator, (req, res, next) => {
 router.delete('/:id', findTodo, (req, res, next) => {
   todoService
     .deleteTodo(req.params.id)
-    .then(data => res.status(HttpStatus.NO_CONTENT).json({
-      data
-    }))
+    .then(data =>
+      res.status(HttpStatus.NO_CONTENT).json({
+        data
+      })
+    )
     .catch(err => next(err));
 });
-
 
 /**
  * test
  */
-
-
-
-
 
 export default router;
