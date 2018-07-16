@@ -19,71 +19,60 @@ const router = Router();
  * GET /api/todos
  */
 router.get('/', (req, res, next) => {
-  todoService
-    .getTodo(req.user.attributes.id)
-    .then(data =>
-      res.json({
-        data
-      })
-    )
-    .catch(err => next(err));
+
+  const query = req.query;
+
+  if (req.query.title) {
+    todoService
+      .filterByTitle(req.query.title, req.user.attributes.id)
+      .then(data =>
+        res.json({
+          data
+        })
+      )
+      .catch(err => next(err));
+  }
 
 
+  else {
+    if (req.query.page) {
+      let page = parseInt(req.query.page);
+      let pageSize = 10;
+      if (req.query.limit) {
+        pageSize = parseInt(req.query.limit);
+      }
 
-  // if (req.query.name) {
-  //   todoService
-  //     .getTodoCategory(req.query.name)
-  //     .then(data =>
-  //       res.json({
-  //         data
-  //       })
-  //     )
-  //     .catch(err => next(err));
-  // } else {
-  //   if (req.query.page) {
-  //     let page = parseInt(req.query.page);
-  //     let pageSize = 10;
-  //     if (req.query.limit) {
-  //       pageSize = parseInt(req.query.limit);
-  //     }
+      return new Todo({})
+        .fetchPage({
+          pageSize: pageSize,
+          page: page,
+          userId: req.user.attributes.id
+        })
+        .then(data =>
+          res.json({
+            data
+          })
+        )
+        .catch(err =>
+          res.json({
+            err
+          })
+        );
+    }
 
-  //     return new Todo({})
-  //       .fetchPage({
-  //         pageSize: pageSize,
-  //         page: page
-  //       })
-  //       .then(data =>
-  //         res.json({
-  //           data
-  //         })
-  //       )
-  //       .catch(err =>
-  //         res.json({
-  //           err
-  //         })
-  //       );
-  //   }
+    else {
+      todoService
+        .getTodo(req.user.attributes.id)
+        .then(data =>
+          res.json({
+            data
+          })
+        )
+        .catch(err => next(err));
 
-  //   if (req.query.title) {
-  //     todoService
-  //       .filterByTitle(req.query.title)
-  //       .then(data =>
-  //         res.json({
-  //           data
-  //         })
-  //       )
-  //       .catch(err => next(err));
-  //   } else {
-  //     todoService
-  //       .getAllTodos(req.query)
-  //       .then(data =>
-  //         res.json({
-  //           data
-  //         })
-  //       )
-  //       .catch(err => next(err));
-  //   }
-  // }
+    }
+  }
+
 });
 
 

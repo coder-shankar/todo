@@ -8,7 +8,6 @@ import HttpStatus from 'http-status-codes';
 const router = Router();
 
 
-
 /**
  * GET /api/category
  */

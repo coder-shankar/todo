@@ -8,7 +8,6 @@ import bcrypt from 'bcryptjs';
  * @return {Promise}
  */
 export function getAllUsers() {
-
   return User.fetchAll();
 }
 

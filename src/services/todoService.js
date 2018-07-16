@@ -79,18 +79,19 @@ export function deleteTodo(id) {
 }
 
 
-export function filterByTitle(title) {
+export function filterByTitle(title, id) {
 
   return Todo.query((qb) => {
-    qb.where('title', 'LIKE', title);
+
+    qb.where('title', 'LIKE', title, 'AND', 'user_id', '=', id);
   }).fetchAll();
 
 }
 
 export function getTodoCategory(name) {
   return Category.forge({
-      name: name
-    })
+    name: name
+  })
     .fetch({
       withRelated: 'category'
     })

@@ -23,6 +23,7 @@ export async function login(payload) {
   //generate token only if it is not in database 
 
 
+
   const accessToken = tokenUtils.createAccessToken(user.attributes.email);
   const refreshToken = tokenUtils.createRefreshToken(user.attributes.email);
 
@@ -36,7 +37,6 @@ export async function login(payload) {
     accessToken: accessToken,
     refreshToken: refreshToken
   };
-
 
 
   return token;
