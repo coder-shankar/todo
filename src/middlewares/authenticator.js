@@ -20,6 +20,21 @@ export async function authenicate(req, res, next) {
     req.user = user;
     next();
   } catch (err) {
+
+    //generate new token if token expires
+    if (err.TokenExpiredError = 'jwt expired') {
+      const token = req.get('refreshToken');
+      const email = await tokenUtils.verifyAccessToken(token).data;
+      const accessToken = tokenUtils.createAccessToken(email);
+
+      res.json({
+        newAccessToken: accessToken
+      });
+
+
+    }
+
+
     res.json({
       code: 401,
       error: 'authenicate error'

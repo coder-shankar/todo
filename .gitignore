@@ -33,3 +33,5 @@ coverage
 
 # Vim swp files
 *.swp
+
+node_modules/

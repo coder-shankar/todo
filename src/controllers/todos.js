@@ -86,20 +86,6 @@ router.get('/', (req, res, next) => {
   // }
 });
 
-/**
- * get id
- */
-
-// router.get('/:id', (req, res, next) => {
-//   todoService
-//     .getTodo(req.params.id)
-//     .then(data =>
-//       res.json({
-//         data
-//       })
-//     )
-//     .catch(err => next(err));
-// });
 
 /**
  * post
@@ -118,9 +104,9 @@ router.post('/', (req, res, next) => {
 /**
  * PUT /api/todos/:id
  */
-router.put('/:id', findTodo, todoValidator, (req, res, next) => {
+router.put('/', findTodo, todoValidator, (req, res, next) => {
   todoService
-    .updateTodo(req.params.id, req.body)
+    .updateTodo(req.users.attributes.id, req.body)
     .then(data =>
       res.json({
         data
@@ -132,9 +118,9 @@ router.put('/:id', findTodo, todoValidator, (req, res, next) => {
 /**
  * DELETE /api/todos/:id
  */
-router.delete('/:id', findTodo, (req, res, next) => {
+router.delete('/', findTodo, (req, res, next) => {
   todoService
-    .deleteTodo(req.params.id)
+    .deleteTodo(req.attributes.id)
     .then(data =>
       res.status(HttpStatus.NO_CONTENT).json({
         data
