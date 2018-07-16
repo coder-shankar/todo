@@ -32,13 +32,11 @@ export async function authenicate(req, res, next) {
       });
 
 
+    } else {
+      res.json({
+        code: 401,
+        error: 'authenicate error'
+      });
     }
-
-
-    res.json({
-      code: 401,
-      error: 'authenicate error'
-    });
   }
-
 }

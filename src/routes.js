@@ -64,6 +64,6 @@ router.use('/login', loginController);
 router.use('/logout', logoutController);
 router.use('/refresh', refreshTokenController);
 router.use('/signup', signupController);
-router.use('/users', usersController);
-router.use('/categories', categoriesController);
+router.use('/users', authMiddleWare.authenicate, usersController);
+router.use('/categories', authMiddleWare.authenicate, categoriesController);
 export default router;
