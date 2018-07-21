@@ -1,17 +1,12 @@
-import * as userServices from '../services/userService';
-import * as tokenUtils from '../utils/token';
-import * as tokenServices from '../services/tokenServices';
-import Boom from 'boom';
-
-
+import * as userServices from "../services/userService";
+import * as tokenUtils from "../utils/token";
+import * as tokenServices from "../services/tokenServices";
+import Boom from "boom";
 
 export async function authenicate(req, res, next) {
-
-
-  const token = req.get('oauth');
+  const token = req.get("oauth");
   try {
     const email = await tokenUtils.verifyAccessToken(token).data;
-
 
     //check the user email
 
@@ -20,22 +15,19 @@ export async function authenicate(req, res, next) {
     req.user = user;
     next();
   } catch (err) {
-
     //generate new token if token expires
-    if (err.TokenExpiredError = 'jwt expired') {
-      const token = req.get('refreshToken');
+    if (err.TokenExpiredError == "jwt expired") {
+      const token = req.get("refreshToken");
       const email = await tokenUtils.verifyAccessToken(token).data;
       const accessToken = tokenUtils.createAccessToken(email);
 
       res.json({
         newAccessToken: accessToken
       });
-
-
     } else {
       res.json({
         code: 401,
-        error: 'authenicate error'
+        error: "authenicate error"
       });
     }
   }

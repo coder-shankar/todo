@@ -1,28 +1,19 @@
-import {
-  Router
-} from 'express';
+import { Router } from "express";
 
-import * as todoService from '../services/todoService';
-import HttpStatus from 'http-status-codes';
-import {
-  findTodo,
-  todoValidator
-} from '../validators/todoValidator';
-import Todo from '../models/todo';
-import {
-  getCategorty
-} from '../services/categoryService';
+import * as todoService from "../services/todoService";
+import HttpStatus from "http-status-codes";
+import { findTodo, todoValidator } from "../validators/todoValidator";
+import Todo from "../models/todo";
+import { getCategorty } from "../services/categoryService";
 
 const router = Router();
 
 /**
  * GET /api/todos
  */
-router.get('/', (req, res, next) => {
-
-  const query = req.query;
-
+router.get("/", (req, res, next) => {
   if (req.query.title) {
+    console.log(req.user.attributes.id);
     todoService
       .filterByTitle(req.query.title, req.user.attributes.id)
       .then(data =>
@@ -31,10 +22,7 @@ router.get('/', (req, res, next) => {
         })
       )
       .catch(err => next(err));
-  }
-
-
-  else {
+  } else {
     if (req.query.page) {
       let page = parseInt(req.query.page);
       let pageSize = 10;
@@ -58,9 +46,7 @@ router.get('/', (req, res, next) => {
             err
           })
         );
-    }
-
-    else {
+    } else {
       todoService
         .getTodo(req.user.attributes.id)
         .then(data =>
@@ -69,18 +55,15 @@ router.get('/', (req, res, next) => {
           })
         )
         .catch(err => next(err));
-
     }
   }
-
 });
-
-
 
 /**
  * post
  */
-router.post('/', (req, res, next) => {
+router.post("/", (req, res, next) => {
+  console.log(req.body);
   todoService
     .createTodo(req.body)
     .then(data =>
@@ -94,7 +77,7 @@ router.post('/', (req, res, next) => {
 /**
  * PUT /api/todos/:id
  */
-router.put('/', findTodo, todoValidator, (req, res, next) => {
+router.put("/", findTodo, todoValidator, (req, res, next) => {
   todoService
     .updateTodo(req.users.attributes.id, req.body)
     .then(data =>
@@ -104,11 +87,10 @@ router.put('/', findTodo, todoValidator, (req, res, next) => {
     )
     .catch(err => next(err));
 });
-
 /**
  * DELETE /api/todos/:id
  */
-router.delete('/', findTodo, (req, res, next) => {
+router.delete("/", findTodo, (req, res, next) => {
   todoService
     .deleteTodo(req.attributes.id)
     .then(data =>

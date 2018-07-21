@@ -1,6 +1,6 @@
-import Boom from 'boom';
-import Todo from '../models/todo';
-import Category from '../models/category';
+import Boom from "boom";
+import Todo from "../models/todo";
+import Category from "../models/category";
 
 /**
  * Get all users.
@@ -9,10 +9,7 @@ import Category from '../models/category';
  */
 export function getAllTodos(query) {
   if (query.sort) {
-
-    return new Todo({
-
-    }).orderBy('title', query.sort).fetchAll();
+    return new Todo({}).orderBy("title", query.sort).fetchAll();
   } else {
     return Todo.fetchAll();
   }
@@ -25,15 +22,9 @@ export function getAllTodos(query) {
  * @return {Promise}
  */
 export function getTodo(id) {
-  return new Todo({
-    id
-  }).fetch().then(todo => {
-    if (!todo) {
-      throw new Boom.notFound('Todo not found');
-    }
-
-    return todo;
-  });
+  return Todo.query(qb => {
+    qb.where("user_id", "=", id);
+  }).fetchAll();
 }
 
 /**
@@ -47,7 +38,9 @@ export function createTodo(todo) {
     title: todo.title,
     description: todo.description,
     user_id: todo.user_id
-  }).save().then(todo => todo.refresh());
+  })
+    .save()
+    .then(todo => todo.refresh());
 }
 
 /**
@@ -58,12 +51,13 @@ export function createTodo(todo) {
  * @return {Promise}
  */
 export function updateTodo(id, todo) {
-
   return new Todo({
     id
-  }).save({
-    title: todo.title
-  }).then(title => title.refresh());
+  })
+    .save({
+      title: todo.title
+    })
+    .then(title => title.refresh());
 }
 
 /**
@@ -75,17 +69,15 @@ export function updateTodo(id, todo) {
 export function deleteTodo(id) {
   return new Todo({
     id
-  }).fetch().then(todo => todo.destroy());
+  })
+    .fetch()
+    .then(todo => todo.destroy());
 }
 
-
 export function filterByTitle(title, id) {
-
-  return Todo.query((qb) => {
-
-    qb.where('title', 'LIKE', title, 'AND', 'user_id', '=', id);
+  return Todo.query(qb => {
+    qb.where("user_id", "=", id).where("title", "LIKE", "%" + title + "%");
   }).fetchAll();
-
 }
 
 export function getTodoCategory(name) {
@@ -93,12 +85,12 @@ export function getTodoCategory(name) {
     name: name
   })
     .fetch({
-      withRelated: 'category'
+      withRelated: "category"
     })
     .then(category => {
       if (!category) {
-        throw new Boom.notFound('item not found');
+        throw new Boom.notFound("item not found");
       }
       return category;
-    })
+    });
 }
