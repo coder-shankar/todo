@@ -74,10 +74,22 @@ export function deleteTodo(id) {
     .then(todo => todo.destroy());
 }
 
-export function filterByTitle(title, id) {
+export function filterByTitle(title, id, page = 1, pageSize = 10) {
   return Todo.query(qb => {
     qb.where("user_id", "=", id).where("title", "LIKE", "%" + title + "%");
-  }).fetchAll();
+  }).fetchPage({
+    pageSize: pageSize,
+    page: page
+  });
+}
+
+export function pagenation(page, pageSize, id) {
+  return Todo.query(qb => {
+    qb.where("user_id", "=", id);
+  }).fetchPage({
+    pageSize: pageSize,
+    page: page
+  });
 }
 
 export function getTodoCategory(name) {

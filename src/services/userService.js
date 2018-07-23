@@ -1,6 +1,6 @@
-import Boom from 'boom';
-import User from '../models/user';
-import bcrypt from 'bcryptjs';
+import Boom from "boom";
+import User from "../models/user";
+import bcrypt from "bcryptjs";
 
 /**
  * Get all users.
@@ -20,13 +20,15 @@ export function getAllUsers() {
 export function getUser(id) {
   return new User({
     id
-  }).fetch().then(user => {
-    if (!user) {
-      throw new Boom.notFound('User not found');
-    }
+  })
+    .fetch()
+    .then(user => {
+      if (!user) {
+        throw new Boom.notFound("User not found");
+      }
 
-    return user;
-  });
+      return user;
+    });
 }
 /**
  * get user by email
@@ -34,12 +36,12 @@ export function getUser(id) {
 
 export function getUserEmail(email) {
   return new User({
-      email: email
-    })
+    email: email
+  })
     .fetch()
     .then(user => {
       if (!user) {
-        throw new Boom.notFound('user not found');
+        throw new Boom.notFound("user not found");
       }
 
       return user;
@@ -57,7 +59,9 @@ export function createUser(user) {
     name: user.name,
     password: bcrypt.hashSync(user.password, 10),
     email: user.email
-  }).save().then(user => user.refresh());
+  })
+    .save()
+    .then(user => user.refresh());
 }
 
 /**
@@ -70,9 +74,11 @@ export function createUser(user) {
 export function updateUser(id, user) {
   return new User({
     id
-  }).save({
-    name: user.name
-  }).then(user => user.refresh());
+  })
+    .save({
+      name: user.name
+    })
+    .then(user => user.refresh());
 }
 
 /**
@@ -84,5 +90,7 @@ export function updateUser(id, user) {
 export function deleteUser(id) {
   return new User({
     id
-  }).fetch().then(user => user.destroy());
+  })
+    .fetch()
+    .then(user => user.destroy());
 }

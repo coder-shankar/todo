@@ -8,21 +8,42 @@ import { getCategorty } from "../services/categoryService";
 
 const router = Router();
 
-/**
+/**k
  * GET /api/todos
  */
 router.get("/", (req, res, next) => {
   if (req.query.title) {
-    console.log(req.user.attributes.id);
+    let page = 1;
+    let pageSize = 10;
+    if (req.query.page) {
+      page = parseInt(req.query.page);
+
+      if (req.query.limit) {
+        pageSize = parseInt(req.query.limit);
+      }
+    }
+    let total = Todo.query(q => {
+      q.where("user_id", "=", req.user.attributes.id).where(
+        "title",
+        "LIKE",
+        "%" + req.query.title + "%"
+      );
+    }).count();
+
     todoService
-      .filterByTitle(req.query.title, req.user.attributes.id)
+      .filterByTitle(req.query.title, req.user.attributes.id, page, pageSize)
       .then(data =>
         res.json({
-          data
+          data: data,
+          total: total
         })
       )
       .catch(err => next(err));
   } else {
+    let total = Todo.query(q => {
+      q.where("user_id", "=", req.user.attributes.id);
+    }).count();
+
     if (req.query.page) {
       let page = parseInt(req.query.page);
       let pageSize = 10;
@@ -30,15 +51,12 @@ router.get("/", (req, res, next) => {
         pageSize = parseInt(req.query.limit);
       }
 
-      return new Todo({})
-        .fetchPage({
-          pageSize: pageSize,
-          page: page,
-          userId: req.user.attributes.id
-        })
+      todoService
+        .pagenation(page, pageSize, req.user.attributes.id)
         .then(data =>
           res.json({
-            data
+            data: data,
+            total: total
           })
         )
         .catch(err =>
@@ -47,11 +65,16 @@ router.get("/", (req, res, next) => {
           })
         );
     } else {
+      let total = Todo.query(q => {
+        q.where("user_id", "=", req.user.attributes.id);
+      }).count();
+
       todoService
         .getTodo(req.user.attributes.id)
         .then(data =>
           res.json({
-            data
+            data: data,
+            total: total
           })
         )
         .catch(err => next(err));
