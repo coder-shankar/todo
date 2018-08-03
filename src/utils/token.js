@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 const accessSecretKey = '1997';
 const refreshSecretKey = '1997';
 
@@ -6,7 +7,7 @@ export function createAccessToken(payload) {
   return jwt.sign({
     data: payload
   }, accessSecretKey, {
-    expiresIn: '1h'
+    expiresIn:"500s"
   });
 }
 

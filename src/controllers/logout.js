@@ -11,6 +11,7 @@ const router = new Router();
  */
 
 router.post('/', async (req, res, next) => {
+
   try {
     const response = await logoutService.logout(req.get('refreshToken'));
     res.json(response);

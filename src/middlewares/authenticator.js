@@ -11,7 +11,6 @@ export async function authenicate(req, res, next) {
     //check the user email
 
     const user = await userServices.getUserEmail(email);
-
     req.user = user;
     next();
   } catch (err) {
@@ -25,10 +24,11 @@ export async function authenicate(req, res, next) {
         newAccessToken: accessToken
       });
     } else {
-      res.json({
-        code: 401,
-        error: "authenicate error"
-      });
+      res.send(401);
+      // res.json({
+      //   code: 401,
+      //   error: "authenicate error"
+      // });
     }
   }
 }

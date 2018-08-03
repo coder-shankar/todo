@@ -59,7 +59,7 @@ router.get("/", (req, res) => {
 });
 router.use("/todos", authMiddleWare.authenicate, todosController);
 router.use("/login", loginController);
-router.use("/logout", logoutController);
+router.use("/logout", authMiddleWare.authenicate,logoutController);
 router.use("/refresh", refreshTokenController);
 router.use("/signup", signupController);
 router.use("/users", authMiddleWare.authenicate, usersController);

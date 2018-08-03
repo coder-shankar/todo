@@ -3,6 +3,7 @@ import * as userServices from './userService';
 import * as tokenUtils from '../utils/token';
 import * as tokenServices from './tokenServices';
 
+
 export async function refresh(req) {
 
 
@@ -12,31 +13,31 @@ export async function refresh(req) {
 
   //getting data from databs
 
+const usr = await userServices.getUserEmail(email);
+console.log(usr.attributes.id);
 
-  const token = await tokenServices.getToken(req.get('refreshToken'));
-
-  const {
-    userId,
-    id
-  } = token.attributes;
-  console.log(token);
+const token = await tokenServices.getToken(usr.attributes.id);
+console.log(token,"token");
 
 
-  await tokenServices.deleteToken(id);
+
+  
+
+  await tokenServices.deleteTokenByUserId(usr.attributes.id);
 
 
   const newAccessToken = tokenUtils.createAccessToken(email);
   const newRefreshToken = tokenUtils.createRefreshToken(email);
   const newToken = {
-    user_id: userId,
+    user_id: usr.attributes.id,
     refresh_token: newRefreshToken
-  };
+  };   
+  console.log(newToken.user_id)
   // write refresh token in database
-  await tokenServices.saveToken(newToken);
-
+  await tokenServices.updateToken(newToken.user_id,newToken.refresh_token);
   return {
     newAccessToken: newAccessToken,
     newRefreshToken: newRefreshToken
   };
 
-}
+}  

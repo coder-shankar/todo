@@ -11,9 +11,9 @@ export function saveToken(token) {
 }
 
 
-export function getToken(refresh) {
+export function getToken(user_id) {
   return new Token({
-      refresh_token: refresh
+      user_id
     })
     .fetch()
     .then(token => {
@@ -24,14 +24,19 @@ export function getToken(refresh) {
     });
 }
 
-export function deleteToken(id) {
+
+export function deleteTokenByUserId(user_id) {
   return new Token({
-    id
-  }).fetch().then(token => token.destroy());
+    user_id
+  }).fetch().then(token => {token.destroy()});
 }
 
-export function deleteTokenByUserId(id) {
-  return new Token({
-    user_id: id
-  }).fetch().then(token => token.destroy());
+
+export function updateToken(user_id, refresh_token) {
+  return new Token({user_id})
+  .where({user_id})
+    .save({
+      refresh_token:refresh_token
+    })
+    .then(token => token.refresh());
 }

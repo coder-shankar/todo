@@ -9,9 +9,7 @@ export async function logout(refreshToken) {
   const user = await userServices.getUserEmail(email);
   const user_id = user.attributes.id;
   console.log(user_id);
-
-
-
+  
   //remove entry in database
   await tokenServices.deleteTokenByUserId(user_id);
 
