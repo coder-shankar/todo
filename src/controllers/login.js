@@ -1,7 +1,5 @@
-import {
-  Router
-} from 'express';
-
+import { Router } from 'express';
+import Sentry from '../sentry';
 import * as loginService from '../services/loginService';
 
 const router = new Router();
@@ -15,7 +13,10 @@ router.post('/', async (req, res, next) => {
     const response = await loginService.login(req.body);
     res.json(response);
   } catch (err) {
-    next(err);
+    Sentry.log({
+      message: 'login failed',
+      error: err
+    });
   }
 });
 

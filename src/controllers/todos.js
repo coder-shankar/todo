@@ -4,6 +4,7 @@ import * as todoService from '../services/todoService';
 import HttpStatus from 'http-status-codes';
 import { findTodo, todoValidator } from '../validators/todoValidator';
 import Todo from '../models/todo';
+import Sentry from '../sentry';
 
 const router = Router();
 
@@ -72,7 +73,13 @@ router.get('/', (req, res, next) => {
             total: total
           })
         )
-        .catch(err => next(err));
+        .catch(err => {
+          Sentry.log({
+            message: 'failed to load todos',
+            error: err
+          });
+          next(err);
+        });
     }
   }
 });
