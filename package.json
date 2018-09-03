@@ -58,7 +58,7 @@
     "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "pg": "^7.3.0",
-    "sentry-node-module": "^1.0.1",
+    "sentry-node-module": "^1.0.3",
     "serve-favicon": "^2.4.3",
     "swagger-jsdoc": "^1.9.4",
     "winston": "^2.3.1",
